@@ -17,6 +17,7 @@ from util import *
 def get_input():
     pass
 
+
 class XGBRegressorCV(BaseEstimator, RegressorMixin):
 
     def __init__(self, xgb_params=None, fit_params=None, cv=3):
@@ -92,7 +93,9 @@ class XGBRegressorCV(BaseEstimator, RegressorMixin):
             y_pred.append(estimator.predict(X))
         return np.mean(y_pred, axis=0)
 
+
 def load_models():
+    # models with their candidate params.
     return {
         'CatBoost': {
             'model_fn': CatBoostRegressor(verbose=False),
@@ -146,49 +149,31 @@ def load_models():
         }
     }
 
+
 def main():
-    xgb_params = {
-        'n_estimators': 1000,
-        'objective': 'reg:linear',
-        'booster': 'gbtree',
-        'learning_rate': 0.02,
-        'max_depth': 22,
-        'min_child_weight': 57,
-        'gamma': 1.45,
-        'alpha': 0.0,
-        'lambda': 0.0,
-        'subsample': 0.67,
-        'colsample_bytree': 0.054,
-        'colsample_bylevel': 0.50,
-        'n_jobs': -1,
-        'random_state': 456
-    }
+    X_train, y_train, X_valid, y_valid = get_input()
 
-    fit_params = {
-        'early_stopping_rounds': 15,
-        'eval_metric': 'rmse',
-        'verbose': False
-    }
+    # Feature union
+    features_union = FeatureUnion([
+        ("feature_generator", feature_generator),
+    ], n_jobs=4, verbose=True)
 
+
+
+    # pipeline
     pipe = Pipeline(
         [
-            ('vt', VarianceThreshold(threshold=0.0)),
-            ('fu', FeatureUnion(
-                [
-                    ('pca', PCA(n_components=100)),
-                    ('st', StatsTransformer(stat_funs=get_stat_funs(), verbose=2))
-                ]
-            )
-             ),
+            ('fu', features_union),
             ('xgb-cv', XGBRegressorCV(
                 xgb_params=xgb_params,
                 fit_params=fit_params,
-                cv=10
-            )
+                cv=10)
              )
         ]
     )
 
+
+def main():
     X_train, y_train_log, X_test, id_test = get_input()
 
     pipe.fit(X_train, y_train_log)
@@ -199,6 +184,7 @@ def main():
 
     y_pred_log = pipe.predict(X_test)
     y_pred = np.expm1(y_pred_log)
+
 
 if __name__ == '__main__':
     main()
