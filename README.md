@@ -1,6 +1,6 @@
-# Time-Series-Prediction
+# TimeSeriesTool
 
-All about TS prediction, ARIMA, STL, LR, SVR, Ensemble(RF, XGB..), RNN, LSTM/GRU/(solo/Seq2Seq), Wavenet. Feature Eng(lag, slide windows, datetime tag, feature selection
+Time series prediction toolkit and pipeline framework.
 
 ##1. Data preparation and support data sets.
 ###  Darksky
