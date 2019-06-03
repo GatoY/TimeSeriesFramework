@@ -13,7 +13,7 @@ Time series prediction toolkit and pipeline framework.
 ### Statistics
 ARIMA, STL
 ### ML
-LR, SVR, RF, XGB...
+LR, SVR, RF, XGB, LGBM, XGBoost
 ### DL
 RNN
 LSTM/GRU-(Solo/Seq2Seq)
