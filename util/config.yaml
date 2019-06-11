@@ -1,0 +1,17 @@
+config:
+  
+  # Perdict period: [PREDICT_START_DATE, PREDICT_START_DATE+PREDICT_LENGTH)
+  predict_start_date: '2019-06-11'
+  predict_length: 35
+  
+  lag_length: 50
+  lag_cols:  
+    - Traffic
+
+  sliding_window_length: 50
+  sliding_cols:
+    - Traffic 
+
+  model_list:
+    - LGBMRegressor
+  
