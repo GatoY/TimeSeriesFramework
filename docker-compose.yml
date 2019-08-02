@@ -1,0 +1,16 @@
+version: '3.4'
+
+services:
+  projectName:
+    image: "companyName/projectName:${DOCKER_TAG:-latest}"
+    container_name: "companyName_projectName"
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+      labels:
+        - "build.number=${BUILD_NUMBER:-no-build-number}"
+        - "build.commit=${GIT_COMMIT_HASH:-no-commit-hash}"
+    ports:
+      - "8888:8888"
+    volumes:
+     - ./:/projectName
